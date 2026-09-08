@@ -2,7 +2,7 @@ THIS REPO IS WORK IN PROGRESS AT BEST,
 AND IS CURRENTLY ONLY USED AS A PROVE OF CONCEPT! 
 BREAKING CHANGES WILL MOST LIKLY ACCURE.
 
-# Quantum Optimization Module (Eclipse Qrip)
+# Quantum Optimization Module (Eclipse Qrisp)
 
 This module provides a flexible architecture for solving optimization problems
 with different quantum(-inspired) algorithms. It is designed to:
