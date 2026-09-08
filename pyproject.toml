@@ -1,0 +1,9 @@
+[project]
+name = "qrisp-optimization"
+version = "0.1.0"
+description = "A collection of problems and algorithms for eclipse/qrisp for combinatorial optimization"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "qrisp>=0.9.8",
+]

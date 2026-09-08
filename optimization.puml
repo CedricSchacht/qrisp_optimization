@@ -1,0 +1,101 @@
+@startuml optimization
+skinparam legendBackgroundColor white
+legend right
+  <color:DarkRed>----  Solid arrows: example implemented
+  <color:LightGray>----  Dashed arrows: possible but not implemented
+  <color:gray> <b>Goal</b>: implement all possible paths
+  ----
+  Draft of the new QuantumOptimization module in eclipse Qrip 04.09.2026
+endlegend
+
+package qrips_optimization {
+abstract QAOA_Requirements {
+    ---
+    + state_prep(qarg) -> qarg
+    + cost_layer(qarg, gamma: float) -> qarg
+    + mixer_layer(qarg, beta: float) -> qarg
+}
+
+abstract ELR_QAOA_Requirements {
+    ...
+}
+
+abstract DQE_Requirements {
+    ...
+}
+
+abstract DQI_Requirements {
+    ...
+}
+
+abstract VQE_Requirements {
+    ...
+}
+
+class SomeVQEImplementation
+class AnotherVQEImplementation
+
+package problems {
+    class MaxKGraphColoringProblem
+    class PortfolioOptimizationProblem
+    class QUBOProblem
+    class SomeOtherInteresstingProblem
+}
+
+class QAOA {
+    + problem: QAOA_Requirements
+}
+
+class LR_QAOA { 
+    + problem: QAOA_Requirements
+    + schedule: ...
+}
+
+class ELR_QAOA {
+    + problem: ELR_QAOA_Requirements
+}
+
+MaxKGraphColoringProblem ---|> QAOA_Requirements
+PortfolioOptimizationProblem ---|> QAOA_Requirements
+QUBOProblem ---|> QAOA_Requirements
+SomeOtherInteresstingProblem ---[#LightGray]|> QAOA_Requirements
+
+MaxKGraphColoringProblem ---|> DQE_Requirements
+PortfolioOptimizationProblem ---|> DQE_Requirements
+QUBOProblem ---[#LightGray]|> DQE_Requirements
+SomeOtherInteresstingProblem ---[#LightGray]|> DQE_Requirements
+
+MaxKGraphColoringProblem ---|> VQE_Requirements
+PortfolioOptimizationProblem ---[#LightGray]|> VQE_Requirements
+QUBOProblem ---[#LightGray]|> VQE_Requirements
+SomeOtherInteresstingProblem ---[#LightGray]|> VQE_Requirements
+
+MaxKGraphColoringProblem ---|> ELR_QAOA_Requirements
+PortfolioOptimizationProblem ---[hidden]|> ELR_QAOA_Requirements
+QUBOProblem ---|> ELR_QAOA_Requirements
+SomeOtherInteresstingProblem ---[#LightGray]|> ELR_QAOA_Requirements
+
+MaxKGraphColoringProblem ---[#LightGray]|> DQI_Requirements
+PortfolioOptimizationProblem ---|> DQI_Requirements
+QUBOProblem ---[#LightGray]|> DQI_Requirements
+SomeOtherInteresstingProblem ---[#LightGray]|> DQI_Requirements
+
+QAOA_Requirements --* QAOA
+QAOA_Requirements --* LR_QAOA
+
+ELR_QAOA_Requirements --* ELR_QAOA
+
+DQE_Requirements --* DQE
+DQI_Requirements --* DQI
+VQE_Requirements --* SomeVQEImplementation
+VQE_Requirements --* AnotherVQEImplementation
+
+note right of problems
+All Problems listed here are understood 
+as examples for the architecure
+
+Concrete Problems can implement 
+multiple Algorithm specific methods
+end note
+}
+@enduml
