@@ -1,40 +1,47 @@
-from qrisp_optimization.QAOA_Requirements import QAOA_Requirements
-from qrisp_optimization.Bruteforce_Requirements import Bruteforce_Requirements
-from qrisp.qaoa import RX_mixer
-from qrisp import h, QuantumArray
+from typing import Generator
+from typing import Self
+from numpy.typing import NDArray
 import numpy as np
 import networkx as nx
 
-class QUBO_Problem(QAOA_Requirements, Bruteforce_Requirements):
-    def __init__(self, Q: np.ndarray):
+from qrisp_optimization.QAOA_Requirements import QAOA_Requirements
+from qrisp_optimization.Bruteforce_Requirements import Bruteforce_Requirements
+from qrisp.qaoa import RX_mixer, create_QUBO_cost_operator
+from qrisp import h, QuantumArray
+
+
+class QUBO_Problem(QAOA_Requirements, Bruteforce_Requirements[NDArray[np.int_]]):
+    def __init__(self, Q: NDArray[np.float_]):
         self.Q = Q
         self.n = Q.shape[0]
-        self._current = None 
 
+    # alternative constructor
     @staticmethod
     def from_networkx(G: nx.Graph) -> Self:
-        # TODO
+        # TODO: build Q from G and return QUBO_Problem(Q)
         ...
 
-    # needed for QAOA and Brutefroce
-    def cl_cost_function(self, x: np.ndarray) -> float:
+    # needed for QAOA and Bruteforce
+    def cl_cost_function(self, x: NDArray[np.int_]) -> float:
         return float(x.T @ self.Q @ x)
 
     # needed for Bruteforce only
-    def next(self) -> np.ndarray:
-        if self._current is None:
-            self._current = np.zeros(self.n, dtype=int)
-            return self._current.copy()
+    def next(self) -> Generator[NDArray[np.int_], None, None]:
+        def gen() -> NDArray[np.int_]:
+            current = np.zeros(self.n, dtype=int)
+            yield current.copy()
 
-        i = self.n - 1
-        while i >= 0:
-            if self._current[i] == 0:
-                self._current[i] = 1
-                self._current[i+1:] = 0
-                return self._current.copy()
-            i -= 1
+            i = self.n - 1
+            while i >= 0:
+                if current[i] == 0:
+                    current[i] = 1
+                    current[i+1:] = 0
+                    yield current.copy()
+                    i = self.n - 1
+                else:
+                    i -= 1
 
-        return None
+        return gen()
 
     # needed for QAOA only
     def state_prep(self, qarg: QuantumArray) -> QuantumArray:
@@ -44,7 +51,8 @@ class QUBO_Problem(QAOA_Requirements, Bruteforce_Requirements):
 
     # needed for QAOA only
     def cost_layer(self, qarg: QuantumArray, gamma: float) -> QuantumArray:
-        # TODO ...
+        cost_op = create_QUBO_cost_operator(self.Q) # when refactoring QRISP move the code here instead of alling the function
+        cost_op(qarg, gamma)
         return qarg
 
     # needed for QAOA only
