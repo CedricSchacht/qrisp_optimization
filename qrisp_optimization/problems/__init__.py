@@ -1,1 +1,2 @@
 from qrisp_optimization.problems.QUBO_Problem import QUBO_Problem
+from qrisp_optimization.problems.MaxCut_Problem import MaxCut_Problem
