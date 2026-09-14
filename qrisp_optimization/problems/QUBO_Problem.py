@@ -9,11 +9,15 @@ from qrisp_optimization.Bruteforce_Requirements import Bruteforce_Requirements
 from qrisp.qaoa import RX_mixer, create_QUBO_cost_operator
 from qrisp import h, QuantumArray
 
+BinaryIntArray: TypeAlias = NDArray[np.int_]
 
-class QUBO_Problem(QAOA_Requirements, Bruteforce_Requirements[NDArray[np.int_]]):
+class QUBO_Problem(
+    QAOA_Requirements[BinaryIntArray], 
+    Bruteforce_Requirements[BinaryIntArray]
+):
     def __init__(self, Q: NDArray[np.float_]):
-        self.Q = Q
-        self.n = Q.shape[0]
+        self.Q: NDArray[np.float_] = Q
+        self.n: int = Q.shape[0]
 
     # alternative constructor
     @staticmethod
@@ -22,26 +26,23 @@ class QUBO_Problem(QAOA_Requirements, Bruteforce_Requirements[NDArray[np.int_]])
         ...
 
     # needed for QAOA and Bruteforce
-    def cl_cost_function(self, x: NDArray[np.int_]) -> float:
+    def cl_cost_function(self, x: BinaryIntArray) -> float:
         return float(x.T @ self.Q @ x)
 
     # needed for Bruteforce only
-    def next(self) -> Generator[NDArray[np.int_], None, None]:
-        def gen() -> NDArray[np.int_]:
-            current = np.zeros(self.n, dtype=int)
-            yield current.copy()
+    def next(self) -> Generator[BinaryIntArray, None, None]:
+        current = np.zeros(self.n, dtype=int)
+        yield current.copy()
 
-            i = self.n - 1
-            while i >= 0:
-                if current[i] == 0:
-                    current[i] = 1
-                    current[i+1:] = 0
-                    yield current.copy()
-                    i = self.n - 1
-                else:
-                    i -= 1
-
-        return gen()
+        i = self.n - 1
+        while i >= 0:
+            if current[i] == 0:
+                current[i] = 1
+                current[i+1:] = 0
+                yield current.copy()
+                i = self.n - 1
+            else:
+                i -= 1
 
     # needed for QAOA only
     def state_prep(self, qarg: QuantumArray) -> QuantumArray:

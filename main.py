@@ -40,7 +40,6 @@ def main():
     )
     optimal = algorithm_bf.solve()              # keep this for printing the results in a nice way
 
-
     algorithm = QAOA(                           
         problem=problem,                        # using polymorphism: here the same problem is a qaoa-able problem
         qarg=QuantumArray(

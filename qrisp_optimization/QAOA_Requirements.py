@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
+from typing import Generic, TypeVar
 from qrisp import QuantumVariable, QuantumArray
 
-class QAOA_Requirements(ABC):
+T = TypeVar("T")
+
+class QAOA_Requirements(ABC, Generic[T]):
     @abstractmethod
-    def cl_cost_function(self, x) -> float: ...
+    def cl_cost_function(self, x: T) -> float: ...
 
     @abstractmethod
     def state_prep(
