@@ -5,10 +5,10 @@ legend right
   <color:LightGray>----  Dashed arrows: possible but not implemented
   <color:gray> <b>Goal</b>: implement all possible paths
   ----
-  Draft of the new QuantumOptimization module in eclipse Qrip 04.09.2026
+  Draft of the new QuantumOptimization module in eclipse Qrisp 04.09.2026
 endlegend
 
-package qrips_optimization {
+package qrisp_optimization {
 abstract QAOA_Requirements {
     ---
     + state_prep(qarg) -> qarg
