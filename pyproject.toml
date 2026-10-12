@@ -8,3 +8,41 @@ dependencies = [
     "jupyter>=1.1.1",
     "qrisp>=0.9.8",
 ]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "ruff>=0.17.0",
+    "types-networkx>=3.6.1.20261006",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+extend-exclude = ["dist", "*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "ANN", # flake8-annotations
+]
+
+[tool.mypy]
+python_version = "3.14"
+python_executable = ".venv/bin/python"
+files = ["qrisp_optimization", "main.py"]
+strict = true
+warn_unreachable = true
+# qrisp ships no type information, so its classes are Any; allow subclassing them
+disallow_subclassing_any = false
+
+[[tool.mypy.overrides]]
+module = ["qrisp", "qrisp.*"]
+ignore_missing_imports = true

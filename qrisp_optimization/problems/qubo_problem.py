@@ -1,36 +1,36 @@
-from typing import Generator
-from typing import Self
-from numpy.typing import NDArray
-import numpy as np
+from collections.abc import Generator
+
 import networkx as nx
-
-from qrisp_optimization.QAOA_Requirements import QAOA_Requirements
-from qrisp_optimization.Bruteforce_Requirements import Bruteforce_Requirements
+import numpy as np
+from numpy.typing import NDArray
+from qrisp import QuantumArray, h
 from qrisp.qaoa import RX_mixer, create_QUBO_cost_operator
-from qrisp import h, QuantumArray
 
-BinaryIntArray: TypeAlias = NDArray[np.int_]
+from qrisp_optimization.bruteforce_requirements import BruteforceRequirements
+from qrisp_optimization.qaoa_requirements import QAOARequirements
 
-class QUBO_Problem(
-    QAOA_Requirements[BinaryIntArray], 
-    Bruteforce_Requirements[BinaryIntArray]
+type BinaryIntArray = NDArray[np.int_]
+
+class QUBOProblem(
+    QAOARequirements[BinaryIntArray],
+    BruteforceRequirements[BinaryIntArray]
 ):
-    def __init__(self, Q: NDArray[np.float_]):
-        self.Q: NDArray[np.float_] = Q
+    def __init__(self, Q: NDArray[np.float32]) -> None:  # noqa: N803
+        self.Q: NDArray[np.float32] = Q
         self.n: int = Q.shape[0]
 
     # alternative constructor
     @staticmethod
-    def from_networkx(G: nx.Graph) -> Self:
+    def from_networkx[T](G: nx.Graph[T]) -> QUBOProblem:  # noqa: N803
         # TODO: build Q from G and return QUBO_Problem(Q)
-        ...
+        raise NotImplementedError()
 
     # needed for QAOA and Bruteforce
     def cl_cost_function(self, x: BinaryIntArray) -> float:
         return float(x.T @ self.Q @ x)
 
     # needed for Bruteforce only
-    def next(self) -> Generator[BinaryIntArray, None, None]:
+    def next(self) -> Generator[BinaryIntArray]:
         current = np.zeros(self.n, dtype=int)
         yield current.copy()
 
@@ -52,7 +52,8 @@ class QUBO_Problem(
 
     # needed for QAOA only
     def cost_layer(self, qarg: QuantumArray, gamma: float) -> QuantumArray:
-        cost_op = create_QUBO_cost_operator(self.Q) # when refactoring QRISP move the code here instead of alling the function
+        # when refactoring QRISP move the code here instead of alling the function
+        cost_op = create_QUBO_cost_operator(self.Q)
         cost_op(qarg, gamma)
         return qarg
 

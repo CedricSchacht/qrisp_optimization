@@ -1,20 +1,19 @@
-from typing import Generator
-from typing import Self
-from numpy.typing import NDArray
 import numpy as np
-
-from qrisp_optimization.QAOA_Requirements import QAOA_Requirements
+from numpy.typing import NDArray
 from qrisp import QuantumArray
 
+from qrisp_optimization.qaoa_requirements import QAOARequirements
 
-class MaxCut_Problem(QAOA_Requirements):
-    def __init__(self, Q: NDArray[np.float_]):
+type BinaryIntArray = NDArray[np.int_]
+
+class MaxCutProblem(QAOARequirements[BinaryIntArray]):
+    def __init__(self, Q: NDArray[np.float32]) -> None:  # noqa: N803
         print("This is currently just a dummy class without correct implementation")
         self.Q = Q
         self.n = Q.shape[0]
 
     # needed for QAOA
-    def cl_cost_function(self, x: NDArray[np.int_]) -> float:
+    def cl_cost_function(self, x: BinaryIntArray) -> float:
         return float(x.T @ self.Q @ x)
 
     # needed for QAOA

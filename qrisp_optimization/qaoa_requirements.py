@@ -1,29 +1,28 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
-from qrisp import QuantumVariable, QuantumArray
 
-T = TypeVar("T")
+from qrisp import QuantumArray, QuantumVariable
 
-class QAOA_Requirements(ABC, Generic[T]):
+
+class QAOARequirements[T](ABC):
     @abstractmethod
     def cl_cost_function(self, x: T) -> float: ...
 
     @abstractmethod
     def state_prep(
-        self, 
+        self,
         qarg: QuantumVariable | QuantumArray
         ) -> QuantumVariable | QuantumArray: ...
 
     @abstractmethod
     def cost_layer(
-        self, 
-        qarg: QuantumVariable | QuantumArray, 
+        self,
+        qarg: QuantumVariable | QuantumArray,
         gamma: float
         ) -> QuantumVariable | QuantumArray: ...
 
     @abstractmethod
     def mixer_layer(
-        self, 
-        qarg: QuantumVariable | QuantumArray, 
+        self,
+        qarg: QuantumVariable | QuantumArray,
         beta: float
         ) -> QuantumVariable | QuantumArray: ...

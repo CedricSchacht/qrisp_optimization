@@ -1,14 +1,16 @@
 import numpy as np
 from qrisp import QuantumArray, QuantumVariable
-from qrisp_optimization.QAOA_Requirements import QAOA_Requirements
 
-class QAOA:
-    def __init__(self, problem: QAOA_Requirements, qarg: QuantumVariable | QuantumArray):
-        self.problem: QAOA_Requirements = problem
+from qrisp_optimization.qaoa_requirements import QAOARequirements
+
+
+class QAOA[T]:
+    def __init__(self, problem: QAOARequirements[T], qarg: QuantumVariable | QuantumArray) -> None:
+        self.problem: QAOARequirements[T] = problem
         self.qarg: QuantumVariable | QuantumArray = qarg
 
     def ansatz(
-        self, 
+        self,
         theta: np.ndarray
     ) -> QuantumVariable | QuantumArray:
 
@@ -16,7 +18,7 @@ class QAOA:
         gammas, betas = theta[p:], theta[:p]
 
         self.problem.state_prep(self.qarg)
-        for gamma, beta in zip(gammas, betas):
+        for gamma, beta in zip(gammas, betas, strict=False):
             self.problem.cost_layer(self.qarg, gamma)
             self.problem.mixer_layer(self.qarg, beta)
 

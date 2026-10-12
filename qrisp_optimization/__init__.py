@@ -1,6 +1,7 @@
-from qrisp_optimization.QAOA_Requirements import QAOA_Requirements
-from qrisp_optimization.QAOA import QAOA
-from qrisp_optimization.LR_QAOA import LR_QAOA
-
-from qrisp_optimization.Bruteforce_Requirements import Bruteforce_Requirements
-from qrisp_optimization.Bruteforce import Bruteforce
+from qrisp_optimization.bruteforce import Bruteforce as Bruteforce
+from qrisp_optimization.bruteforce_requirements import (
+    BruteforceRequirements as BruteforceRequirements,
+)
+from qrisp_optimization.lr_qaoa import LRQAOA as LRQAOA
+from qrisp_optimization.qaoa import QAOA as QAOA
+from qrisp_optimization.qaoa_requirements import QAOARequirements as QAOARequirements
