@@ -21,7 +21,7 @@ class LRQAOA[T]:
         Problem providing state preparation, cost layer and mixer layer.
     qarg : Callable[[], QuantumVariable | QuantumArray]
         Factory creating a fresh quantum argument; every call to
-        [`ansatz`][qrisp_optimization.LRQAOA.ansatz] builds on a new one.
+        [`ansatz`][qrisp_optimization.lr_qaoa.LRQAOA.ansatz] builds on a new one.
     """
 
     def __init__(

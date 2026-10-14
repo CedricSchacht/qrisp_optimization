@@ -18,7 +18,7 @@ different quantum(-inspired) algorithms built on [Eclipse Qrisp](https://qrisp.e
 [`QAOARequirements`][qrisp_optimization.QAOARequirements] or
 [`BruteforceRequirements`][qrisp_optimization.BruteforceRequirements].
 
-**Problems** live in [`qrisp_optimization.problems`](api/problems.md) and
+**Problems** live in [`qrisp_optimization.problems`](reference/problems/index.md) and
 implement one or more requirements interfaces.
 
 **Algorithms** such as [`QAOA`][qrisp_optimization.QAOA],

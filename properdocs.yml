@@ -39,6 +39,13 @@ markdown_extensions:
 plugins:
   - search
   - autorefs
+  # one API reference page per source file, generated on every build
+  - gen-files:
+      scripts:
+        - scripts/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
   - mkdocstrings:
       handlers:
         python:
@@ -57,21 +64,18 @@ plugins:
             separate_signature: true
             merge_init_into_class: true
   - mkdocs-jupyter:
+      # by default every .md page is probed via jupytext, which runs pandoc on it and warns
+      # about mkdocstrings' ::: syntax; only .ipynb files are notebooks here
+      ignore: ["*.md"]
       # notebooks are rendered with their saved outputs, not re-executed on build
       execute: false
       include_source: true
 
 nav:
   - Home: index.md
+  - Development: development.md
   - Guides:
       - Solve an existing problem: guides/solve-existing-problem.ipynb
       - Add a new problem: guides/new-problem.ipynb
       - Add a new algorithm: guides/new-algorithm.ipynb
-  - API reference:
-      - Overview: api/index.md
-      - Algorithms: api/algorithms.md
-      - Requirements: api/requirements.md
-      - Problems: api/problems.md
-      - Metrics: api/metrics.md
-      - Utils: api/utils.md
-  - Development: development.md
+  - API reference: reference/

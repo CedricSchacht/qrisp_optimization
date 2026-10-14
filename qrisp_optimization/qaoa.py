@@ -20,7 +20,7 @@ class QAOA[T]:
         Problem providing state preparation, cost layer and mixer layer.
     qarg : Callable[[], QuantumVariable | QuantumArray]
         Factory creating a fresh quantum argument; every call to
-        [`ansatz`][qrisp_optimization.QAOA.ansatz] builds on a new one.
+        [`ansatz`][qrisp_optimization.qaoa.QAOA.ansatz] builds on a new one.
     """
 
     def __init__(
@@ -30,7 +30,7 @@ class QAOA[T]:
         self.qarg: Callable[[], QuantumVariable | QuantumArray] = qarg
 
     def ansatz(self, theta: np.ndarray) -> QuantumVariable | QuantumArray:
-        """Build the depth-``p`` QAOA ansatz on ``qarg``.
+        """Build the depth-``p`` QAOA ansatz on a fresh quantum argument.
 
         Applies the problem's state preparation followed by ``p`` alternating
         cost and mixer layers.
@@ -45,7 +45,7 @@ class QAOA[T]:
         Returns
         -------
         QuantumVariable | QuantumArray
-            ``qarg`` after applying the ansatz.
+            A new quantum argument from ``qarg()`` after applying the ansatz.
         """
         p = len(theta) // 2
         gammas, betas = theta[p:], theta[:p]
@@ -71,7 +71,8 @@ class QAOA[T]:
         Parameters
         ----------
         theta : np.ndarray
-            Initial angles of length ``2 * p`` (see [`ansatz`][qrisp_optimization.QAOA.ansatz]).
+            Initial angles of length ``2 * p``
+            (see [`ansatz`][qrisp_optimization.qaoa.QAOA.ansatz]).
         metric : Callable[[QuantumVariable | QuantumArray, QAOARequirements[T]], float], optional
             Objective to minimize. Called as ``metric(qarg, problem)`` with the
             quantum argument after the ansatz is applied and this solver's

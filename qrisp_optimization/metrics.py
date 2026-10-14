@@ -1,7 +1,7 @@
 """Objectives that reduce a measured quantum argument to a scalar cost.
 
 Every metric has the signature ``metric(qarg, problem) -> float`` and can be
-passed to [`QAOA.optimize`][qrisp_optimization.QAOA.optimize], which minimizes it.
+passed to [`QAOA.optimize`][qrisp_optimization.qaoa.QAOA.optimize], which minimizes it.
 """
 
 from qrisp import QuantumArray, QuantumVariable

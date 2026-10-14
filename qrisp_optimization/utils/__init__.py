@@ -9,9 +9,9 @@ from qrisp import QuantumVariable
 class QuantumBinary(QuantumVariable):
     """Single-qubit quantum variable that measures as ``0`` or ``1``.
 
-    This is only needed, since QuantumBool returns True or False,
-    while 0 and 1 are needed to use the bitstring
-    as an assignment vector in the cl_cost_function of the problem.
+    This is only needed, since ``QuantumBool`` measures as ``True`` or ``False``,
+    while ``0`` and ``1`` are needed to use the bitstring as an assignment
+    vector in the ``cl_cost_function`` of the problem.
     """
 
     def __init__(self) -> None:

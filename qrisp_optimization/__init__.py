@@ -7,12 +7,12 @@ Problems implement small requirement interfaces
 any solver that consumes that interface ([`QAOA`][qrisp_optimization.QAOA],
 [`LRQAOA`][qrisp_optimization.LRQAOA], [`Bruteforce`][qrisp_optimization.Bruteforce]).
 
-Subpackages and modules
------------------------
+The package is organized into:
+
 - `problems`: concrete problems such as
   [`QUBOProblem`][qrisp_optimization.problems.QUBOProblem] and
   [`MaxCutProblem`][qrisp_optimization.problems.MaxCutProblem].
-- `metrics`: objectives for [`QAOA.optimize`][qrisp_optimization.QAOA.optimize], e.g.
+- `metrics`: objectives for [`QAOA.optimize`][qrisp_optimization.qaoa.QAOA.optimize], e.g.
   [`exp_val`][qrisp_optimization.metrics.exp_val].
 - `utils`: helpers such as [`QuantumBinary`][qrisp_optimization.utils.QuantumBinary].
 """
