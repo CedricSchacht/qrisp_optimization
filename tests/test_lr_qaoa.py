@@ -35,6 +35,7 @@ class RecordingProblem(QAOARequirements[Any]):
 
 # linear_ramp
 
+
 @pytest.mark.parametrize(
     ("start", "stop", "steps", "expected"),
     [
@@ -46,7 +47,10 @@ class RecordingProblem(QAOARequirements[Any]):
     ],
 )
 def test_linear_ramp_is_evenly_spaced(
-    start: float, stop: float, steps: int, expected: list[float],
+    start: float,
+    stop: float,
+    steps: int,
+    expected: list[float],
 ) -> None:
     algorithm = LRQAOA(RecordingProblem(), qarg=object)
 
@@ -55,17 +59,23 @@ def test_linear_ramp_is_evenly_spaced(
 
 # ansatz
 
+
 def test_ansatz_ramps_gamma_up_and_beta_magnitude_down() -> None:
     problem = RecordingProblem()
     LRQAOA(problem, qarg=object).ansatz(depth=3, d_gamma=0.6, d_beta=0.4)
 
     # mixer angles are negated, see LRQAOA.ansatz
-    assert problem.calls == pytest.approx([
-        ("prep", None),
-        ("cost", 0.0), ("mixer", -0.4),
-        ("cost", 0.3), ("mixer", -0.2),
-        ("cost", 0.6), ("mixer", 0.0),
-    ])
+    assert problem.calls == pytest.approx(
+        [
+            ("prep", None),
+            ("cost", 0.0),
+            ("mixer", -0.4),
+            ("cost", 0.3),
+            ("mixer", -0.2),
+            ("cost", 0.6),
+            ("mixer", 0.0),
+        ]
+    )
 
 
 def test_ansatz_returns_the_qarg_created_by_the_factory() -> None:

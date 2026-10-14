@@ -12,7 +12,7 @@ from qrisp_optimization.qaoa_requirements import QAOARequirements
 
 
 class QAOA[T]:
-    """QAOA solver for any problem implementing :class:`QAOARequirements`.
+    """QAOA solver for any problem implementing `QAOARequirements`.
 
     Parameters
     ----------
@@ -20,21 +20,16 @@ class QAOA[T]:
         Problem providing state preparation, cost layer and mixer layer.
     qarg : Callable[[], QuantumVariable | QuantumArray]
         Factory creating a fresh quantum argument; every call to
-        :meth:`ansatz` builds on a new one.
+        [`ansatz`][qrisp_optimization.QAOA.ansatz] builds on a new one.
     """
 
     def __init__(
-        self,
-        problem: QAOARequirements[T],
-        qarg: Callable[[], QuantumVariable | QuantumArray]
+        self, problem: QAOARequirements[T], qarg: Callable[[], QuantumVariable | QuantumArray]
     ) -> None:
         self.problem: QAOARequirements[T] = problem
         self.qarg: Callable[[], QuantumVariable | QuantumArray] = qarg
 
-    def ansatz(
-        self,
-        theta: np.ndarray
-    ) -> QuantumVariable | QuantumArray:
+    def ansatz(self, theta: np.ndarray) -> QuantumVariable | QuantumArray:
         """Build the depth-``p`` QAOA ansatz on ``qarg``.
 
         Applies the problem's state preparation followed by ``p`` alternating
@@ -52,7 +47,6 @@ class QAOA[T]:
         QuantumVariable | QuantumArray
             ``qarg`` after applying the ansatz.
         """
-
         p = len(theta) // 2
         gammas, betas = theta[p:], theta[:p]
         qarg = self.qarg()
@@ -77,13 +71,16 @@ class QAOA[T]:
         Parameters
         ----------
         theta : np.ndarray
-            Initial angles of length ``2 * p`` (see :meth:`ansatz`).
-        metric : Callable[[QuantumVariable | QuantumArray], float] | None, optional
-            Objective to minimize, evaluated on the quantum argument after the
-            ansatz is applied. Defaults to the expectation value of the
-            problem's ``cl_cost_function`` over the measurement outcomes.
+            Initial angles of length ``2 * p`` (see [`ansatz`][qrisp_optimization.QAOA.ansatz]).
+        metric : Callable[[QuantumVariable | QuantumArray, QAOARequirements[T]], float], optional
+            Objective to minimize. Called as ``metric(qarg, problem)`` with the
+            quantum argument after the ansatz is applied and this solver's
+            problem. Default is [`exp_val`][qrisp_optimization.metrics.exp_val], the
+            expectation value of the problem's ``cl_cost_function``.
         method : str, optional
-            Optimizer passed to :func:`scipy.optimize.minimize`. Default is ``"COBYLA"``.
+            Optimizer passed to
+            [`scipy.optimize.minimize`][scipy.optimize.minimize].
+            Default is ``"COBYLA"``.
         max_iter : int, optional
             Maximum number of optimizer iterations. Default is ``100``.
         options : dict[str, Any] | None, optional

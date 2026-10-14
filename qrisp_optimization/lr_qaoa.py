@@ -9,7 +9,7 @@ from qrisp_optimization.qaoa_requirements import QAOARequirements
 
 
 class LRQAOA[T]:
-    """LR-QAOA solver for any problem implementing :class:`QAOARequirements`.
+    """LR-QAOA solver for any problem implementing `QAOARequirements`.
 
     Instead of optimizing the angles variationally, the cost angles ramp
     linearly up and the mixer angles ramp linearly down over the layers,
@@ -21,13 +21,11 @@ class LRQAOA[T]:
         Problem providing state preparation, cost layer and mixer layer.
     qarg : Callable[[], QuantumVariable | QuantumArray]
         Factory creating a fresh quantum argument; every call to
-        :meth:`ansatz` builds on a new one.
+        [`ansatz`][qrisp_optimization.LRQAOA.ansatz] builds on a new one.
     """
 
     def __init__(
-        self,
-        problem: QAOARequirements[T],
-        qarg: Callable[[], QuantumVariable | QuantumArray]
+        self, problem: QAOARequirements[T], qarg: Callable[[], QuantumVariable | QuantumArray]
     ) -> None:
         self.problem: QAOARequirements[T] = problem
         self.qarg: Callable[[], QuantumVariable | QuantumArray] = qarg
@@ -80,7 +78,6 @@ class LRQAOA[T]:
         therefore negated, so that a positive ``d_beta`` anneals towards the
         minimum of the cost rather than the maximum.
         """
-
         gammas = self.linear_ramp(0.0, d_gamma, depth)
         betas = -self.linear_ramp(d_beta, 0.0, depth)
         qarg = self.qarg()

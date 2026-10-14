@@ -9,6 +9,7 @@ from qrisp_optimization.bruteforce_requirements import BruteforceRequirements
 
 T = TypeVar("T", bound=NDArray[np.generic])
 
+
 class Bruteforce[T: NDArray[np.generic]]:
     """Find all optimal solutions of a problem by evaluating every candidate.
 

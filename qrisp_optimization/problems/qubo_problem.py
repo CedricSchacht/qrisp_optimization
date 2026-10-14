@@ -12,13 +12,11 @@ from qrisp_optimization.qaoa_requirements import QAOARequirements
 
 type BinaryIntArray = NDArray[np.int_]
 
-class QUBOProblem(
-    QAOARequirements[BinaryIntArray],
-    BruteforceRequirements[BinaryIntArray]
-):
+
+class QUBOProblem(QAOARequirements[BinaryIntArray], BruteforceRequirements[BinaryIntArray]):
     """QUBO problem ``min_x x^T Q x`` over binary vectors ``x``.
 
-    Solvable by both QAOA-type solvers and :class:`Bruteforce`.
+    Solvable by both QAOA-type solvers and [`Bruteforce`][qrisp_optimization.Bruteforce].
 
     Parameters
     ----------
@@ -63,7 +61,7 @@ class QUBOProblem(
         while i >= 0:
             if current[i] == 0:
                 current[i] = 1
-                current[i+1:] = 0
+                current[i + 1 :] = 0
                 yield current.copy()
                 i = self.n - 1
             else:
@@ -89,14 +87,19 @@ class QUBOProblem(
 
     # needed for QAOA only
     def cost_layer(self, qarg: QuantumArray, gamma: float) -> QuantumArray:
-        """Apply the QUBO phase-separating operator ``exp(-i gamma H_Q)``.
+        """Apply the QUBO phase-separating operator ``exp(-i gamma' H_Q)``.
+
+        Qrisp's ``create_QUBO_cost_operator`` rescales the angle to
+        ``gamma' = gamma / sqrt(||Q||_F)`` (Frobenius norm) for better optimizer
+        performance, so ``gamma`` is not directly comparable to the cost angles
+        of other problems.
 
         Parameters
         ----------
         qarg : QuantumArray
             Array of binary quantum variables, one per QUBO variable.
         gamma : float
-            Cost-layer angle.
+            Cost-layer angle, before rescaling.
 
         Returns
         -------

@@ -4,11 +4,11 @@ from abc import ABC, abstractmethod
 
 from qrisp import QuantumArray, QuantumVariable
 
-from qrisp_optimization.cl_cost_requriements import CLCostRequirements
+from qrisp_optimization.cl_cost_requirements import CLCostRequirements
 
 
 class QAOARequirements[T](CLCostRequirements[T], ABC):
-    """Abstract interface for problems solvable by :class:`QAOA` and :class:`LRQAOA`.
+    """Abstract interface for problems solvable by `QAOA` and `LRQAOA`.
 
     Type Parameters
     ---------------
@@ -17,10 +17,7 @@ class QAOARequirements[T](CLCostRequirements[T], ABC):
     """
 
     @abstractmethod
-    def state_prep(
-        self,
-        qarg: QuantumVariable | QuantumArray
-        ) -> QuantumVariable | QuantumArray:
+    def state_prep(self, qarg: QuantumVariable | QuantumArray) -> QuantumVariable | QuantumArray:
         """Prepare the initial state of the QAOA circuit.
 
         Parameters
@@ -37,10 +34,8 @@ class QAOARequirements[T](CLCostRequirements[T], ABC):
 
     @abstractmethod
     def cost_layer(
-        self,
-        qarg: QuantumVariable | QuantumArray,
-        gamma: float
-        ) -> QuantumVariable | QuantumArray:
+        self, qarg: QuantumVariable | QuantumArray, gamma: float
+    ) -> QuantumVariable | QuantumArray:
         """Apply one layer of the phase-separating cost operator.
 
         Parameters
@@ -59,10 +54,8 @@ class QAOARequirements[T](CLCostRequirements[T], ABC):
 
     @abstractmethod
     def mixer_layer(
-        self,
-        qarg: QuantumVariable | QuantumArray,
-        beta: float
-        ) -> QuantumVariable | QuantumArray:
+        self, qarg: QuantumVariable | QuantumArray, beta: float
+    ) -> QuantumVariable | QuantumArray:
         """Apply one layer of the mixer operator.
 
         Parameters

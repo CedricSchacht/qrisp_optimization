@@ -4,13 +4,16 @@ from qrisp import QuantumVariable
 
 # TODO remove this package once better places are found for the functions
 
+
 # this could be part of qrisp core (might even be a QuantumBool(numeric=True) kind of syntax?)
 class QuantumBinary(QuantumVariable):
+    """Single-qubit quantum variable that measures as ``0`` or ``1``.
+
+    This is only needed, since QuantumBool returns True or False,
+    while 0 and 1 are needed to use the bitstring
+    as an assignment vector in the cl_cost_function of the problem.
     """
-        This is only needed, since QuantumBool returns True or False,
-        while 0 and 1 are needed to use the bitstring
-        as a asignment vector in the cl_cost_function of the problem
-    """
+
     def __init__(self) -> None:
         """Create a single-qubit quantum variable."""
         QuantumVariable.__init__(self, size=1)

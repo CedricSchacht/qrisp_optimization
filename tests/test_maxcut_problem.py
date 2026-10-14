@@ -45,6 +45,7 @@ def test_isolated_nodes_get_a_qubit() -> None:
 
 # classical cost
 
+
 def test_cl_cost_function_is_negative_cut_weight(triangle: nx.Graph[str]) -> None:
     problem = MaxCutProblem(triangle)
 
@@ -65,6 +66,7 @@ def test_cl_cost_function_returns_float(maxcut: MaxCutProblem) -> None:
 
 # Bruteforce requirements
 
+
 def test_next_enumerates_every_assignment_once_in_lexicographic_order(
     maxcut: MaxCutProblem,
 ) -> None:
@@ -81,6 +83,7 @@ def test_next_yields_independent_arrays(maxcut: MaxCutProblem) -> None:
 
 
 # QAOA requirements
+
 
 def test_state_prep_creates_uniform_superposition(maxcut: MaxCutProblem) -> None:
     qarg = binary_qarg_factory(maxcut.n)()

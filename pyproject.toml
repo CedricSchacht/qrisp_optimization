@@ -16,6 +16,12 @@ dev = [
     "ruff>=0.17.0",
     "types-networkx>=3.6.1.20261006",
 ]
+docs = [
+    "mkdocs-jupyter>=0.26.3",
+    "mkdocs-material>=9.7.7",
+    "mkdocstrings[python]>=1.0.7",
+    "properdocs>=1.6.7",
+]
 
 [tool.ruff]
 target-version = "py314"
@@ -33,7 +39,16 @@ select = [
     "B",   # flake8-bugbear
     "SIM", # flake8-simplify
     "ANN", # flake8-annotations
+    "D",   # pydocstyle
 ]
+# constructor parameters are documented in the class docstring
+ignore = ["D107"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
 
 [tool.ruff.lint.isort]
 # shared test helpers, importable because pytest puts tests/ on sys.path

@@ -10,6 +10,7 @@ from helpers import all_assignments, binary_qarg_factory, index_of, statevector
 
 # classical cost
 
+
 def test_cl_cost_function_is_xT_Q_x(qubo: QUBOProblem, qubo_q: NDArray[np.float64]) -> None:  # noqa: N802
     for x in all_assignments(qubo.n):
         assert qubo.cl_cost_function(x) == pytest.approx(float(x @ qubo_q @ x))
@@ -29,6 +30,7 @@ def test_cl_cost_function_returns_float(qubo: QUBOProblem) -> None:
 
 # Bruteforce requirements
 
+
 def test_next_enumerates_every_assignment_once_in_lexicographic_order(qubo: QUBOProblem) -> None:
     candidates = list(qubo.next())
 
@@ -43,6 +45,7 @@ def test_next_yields_independent_arrays(qubo: QUBOProblem) -> None:
 
 
 # QAOA requirements
+
 
 def test_state_prep_creates_uniform_superposition(qubo: QUBOProblem) -> None:
     qarg = binary_qarg_factory(qubo.n)()

@@ -18,7 +18,7 @@ def test_measurement_yields_integer_bits() -> None:
     qarg = QuantumArray(qtype=QuantumBinary(), shape=3)
     x(qarg[1])
 
-    (outcome, prob), = qarg.get_measurement().items()
+    ((outcome, prob),) = qarg.get_measurement().items()
 
     assert list(outcome) == [0, 1, 0]
     assert prob == pytest.approx(1.0)

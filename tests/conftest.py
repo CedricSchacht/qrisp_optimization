@@ -11,12 +11,14 @@ from qrisp_optimization.problems import MaxCutProblem, QUBOProblem
 @pytest.fixture
 def qubo_q() -> NDArray[np.float64]:
     """Small 4-variable upper-triangular QUBO matrix with a unique optimum."""
-    return np.array([
-        [-1.0,  2.0,  0.0, -0.5],
-        [ 0.0, -2.0,  1.0,  0.0],
-        [ 0.0,  0.0, -1.5,  2.5],
-        [ 0.0,  0.0,  0.0,  1.0],
-    ])
+    return np.array(
+        [
+            [-1.0, 2.0, 0.0, -0.5],
+            [0.0, -2.0, 1.0, 0.0],
+            [0.0, 0.0, -1.5, 2.5],
+            [0.0, 0.0, 0.0, 1.0],
+        ]
+    )
 
 
 @pytest.fixture

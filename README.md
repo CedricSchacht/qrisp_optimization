@@ -31,36 +31,29 @@ Example (QAOA_Requirements):
 from abc import ABC, abstractmethod
 from qrisp import QuantumVariable, QuantumArray
 
+
 class QAOA_Requirements(ABC):
     @abstractmethod
-    def cl_cost_function(self, x) -> float: 
+    def cl_cost_function(self, x) -> float:
         """Returns the classical cost of the problem given a assignment vector x"""
         ...
 
     @abstractmethod
-    def state_prep(
-        self, 
-        qarg: QuantumVariable | QuantumArray
-    ) -> QuantumVariable | QuantumArray: 
+    def state_prep(self, qarg: QuantumVariable | QuantumArray) -> QuantumVariable | QuantumArray:
         """Prepare the initial quantum state."""
         ...
 
     @abstractmethod
     def cost_layer(
-        self, 
-        qarg: QuantumVariable | QuantumArray, 
-        gamma: float
-    ) -> QuantumVariable | QuantumArray: 
+        self, qarg: QuantumVariable | QuantumArray, gamma: float
+    ) -> QuantumVariable | QuantumArray:
         """Apply the cost Hamiltonian layer."""
         ...
 
-
     @abstractmethod
     def mixer_layer(
-        self, 
-        qarg: QuantumVariable | QuantumArray, 
-        beta: float
-    ) -> QuantumVariable | QuantumArray:        
+        self, qarg: QuantumVariable | QuantumArray, beta: float
+    ) -> QuantumVariable | QuantumArray:
         """Apply the mixer Hamiltonian layer."""
         ...
 ```

@@ -1,9 +1,9 @@
-"""Interface a problem must implement to be solvable by :class:`Bruteforce`."""
+"""Interface a problem must implement to be solvable by `Bruteforce`."""
 
 from abc import ABC, abstractmethod
 from collections.abc import Generator
 
-from qrisp_optimization.cl_cost_requriements import CLCostRequirements
+from qrisp_optimization.cl_cost_requirements import CLCostRequirements
 
 
 class BruteforceRequirements[T](CLCostRequirements[T], ABC):

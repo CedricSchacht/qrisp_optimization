@@ -36,6 +36,7 @@ class RecordingProblem(QAOARequirements[Any]):
 
 # ansatz
 
+
 def test_ansatz_applies_prep_then_alternating_layers() -> None:
     problem = RecordingProblem()
     # theta = [beta_1, beta_2, gamma_1, gamma_2]
@@ -43,8 +44,10 @@ def test_ansatz_applies_prep_then_alternating_layers() -> None:
 
     assert problem.calls == [
         ("prep", None),
-        ("cost", 0.3), ("mixer", 0.1),
-        ("cost", 0.4), ("mixer", 0.2),
+        ("cost", 0.3),
+        ("mixer", 0.1),
+        ("cost", 0.4),
+        ("mixer", 0.2),
     ]
 
 
@@ -75,6 +78,7 @@ def test_ansatz_with_zero_angles_is_uniform(maxcut: MaxCutProblem) -> None:
 
 # optimize
 
+
 def test_optimize_returns_angles_of_same_shape(maxcut: MaxCutProblem) -> None:
     theta = QAOA(maxcut, binary_qarg_factory(maxcut.n)).optimize(np.full(4, 0.5), max_iter=6)
 
@@ -84,7 +88,8 @@ def test_optimize_returns_angles_of_same_shape(maxcut: MaxCutProblem) -> None:
 
 @pytest.mark.parametrize("problem_name", ["qubo", "maxcut"])
 def test_optimize_lowers_expectation_and_favours_optimum(
-    request: pytest.FixtureRequest, problem_name: str,
+    request: pytest.FixtureRequest,
+    problem_name: str,
 ) -> None:
     problem: QUBOProblem | MaxCutProblem = request.getfixturevalue(problem_name)
     algorithm = QAOA(problem, binary_qarg_factory(problem.n))
@@ -149,7 +154,10 @@ def test_optimize_options_override_max_iter(maxcut: MaxCutProblem) -> None:
         return float(evaluations)
 
     QAOA(maxcut, binary_qarg_factory(maxcut.n)).optimize(
-        np.full(2, 0.5), metric=metric, max_iter=50, options={"maxiter": 4},
+        np.full(2, 0.5),
+        metric=metric,
+        max_iter=50,
+        options={"maxiter": 4},
     )
 
     assert evaluations <= 4
@@ -157,7 +165,9 @@ def test_optimize_options_override_max_iter(maxcut: MaxCutProblem) -> None:
 
 def test_optimize_with_other_scipy_method(maxcut: MaxCutProblem) -> None:
     theta = QAOA(maxcut, binary_qarg_factory(maxcut.n)).optimize(
-        np.full(2, 0.5), method="Nelder-Mead", max_iter=5,
+        np.full(2, 0.5),
+        method="Nelder-Mead",
+        max_iter=5,
     )
 
     assert theta.shape == (2,)

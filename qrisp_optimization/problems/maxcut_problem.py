@@ -14,13 +14,11 @@ from qrisp_optimization.qaoa_requirements import QAOARequirements
 
 type BinaryIntArray = NDArray[np.int_]
 
-class MaxCutProblem(
-    QAOARequirements[BinaryIntArray],
-    BruteforceRequirements[BinaryIntArray]
-):
+
+class MaxCutProblem(QAOARequirements[BinaryIntArray], BruteforceRequirements[BinaryIntArray]):
     """Weighted MaxCut problem.
 
-    Solvable by both QAOA-type solvers and :class:`Bruteforce`.
+    Solvable by both QAOA-type solvers and [`Bruteforce`][qrisp_optimization.Bruteforce].
 
     Partition the nodes of a graph into two sets such that the total weight of
     the edges between the sets is maximal. A solution ``x`` assigns node
