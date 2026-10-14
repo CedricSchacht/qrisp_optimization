@@ -70,6 +70,12 @@ plugins:
       # notebooks are rendered with their saved outputs, not re-executed on build
       execute: false
       include_source: true
+      # the plugin's default is an empty URL, which leaves MathJax unloaded on notebook pages
+      custom_mathjax_url: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML-full,Safe
+
+# autorefs cross-references and .ipynb links in notebook pages
+hooks:
+  - scripts/notebook_hooks.py
 
 nav:
   - Home: index.md

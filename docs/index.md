@@ -25,6 +25,21 @@ implement one or more requirements interfaces.
 [`LRQAOA`][qrisp_optimization.LRQAOA] and [`Bruteforce`][qrisp_optimization.Bruteforce]
 depend only on a requirements interface, never on a concrete problem class.
 
+## Which problem works with which algorithm?
+
+A problem can be handed to every algorithm whose requirements interface it implements:
+
+| Problem | `QAOARequirements` | `BruteforceRequirements` |
+|---|---|---|
+| [`QUBOProblem`][qrisp_optimization.problems.QUBOProblem] | ✓ | ✓ |
+| [`MaxCutProblem`][qrisp_optimization.problems.MaxCutProblem] | ✓ | ✓ |
+
+| Algorithm | consumes |
+|---|---|
+| [`QAOA`][qrisp_optimization.QAOA] | `QAOARequirements` |
+| [`LRQAOA`][qrisp_optimization.LRQAOA] | `QAOARequirements` |
+| [`Bruteforce`][qrisp_optimization.Bruteforce] | `BruteforceRequirements` |
+
 ## Guides
 
 - [Solve an existing problem with an existing algorithm](guides/solve-existing-problem.ipynb)
