@@ -3,8 +3,10 @@
 from abc import ABC, abstractmethod
 from collections.abc import Generator
 
+from qrisp_optimization.cl_cost_requriements import CLCostRequirements
 
-class BruteforceRequirements[T](ABC):
+
+class BruteforceRequirements[T](CLCostRequirements[T], ABC):
     """Abstract interface for problems that can be solved by exhaustive search.
 
     Type Parameters
@@ -12,22 +14,6 @@ class BruteforceRequirements[T](ABC):
     T
         Type of a candidate solution (e.g. a binary assignment vector).
     """
-
-    @abstractmethod
-    def cl_cost_function(self, x: T) -> float:
-        """Evaluate the classical cost of a candidate solution.
-
-        Parameters
-        ----------
-        x : T
-            Candidate solution.
-
-        Returns
-        -------
-        float
-            Cost of ``x``. Lower values are better.
-        """
-        ...
 
     @abstractmethod
     def next(self) -> Generator[T]:

@@ -4,8 +4,10 @@ from abc import ABC, abstractmethod
 
 from qrisp import QuantumArray, QuantumVariable
 
+from qrisp_optimization.cl_cost_requriements import CLCostRequirements
 
-class QAOARequirements[T](ABC):
+
+class QAOARequirements[T](CLCostRequirements[T], ABC):
     """Abstract interface for problems solvable by :class:`QAOA` and :class:`LRQAOA`.
 
     Type Parameters
@@ -13,22 +15,6 @@ class QAOARequirements[T](ABC):
     T
         Type of a classical solution, i.e. a measurement outcome of ``qarg``.
     """
-
-    @abstractmethod
-    def cl_cost_function(self, x: T) -> float:
-        """Evaluate the classical cost of a solution.
-
-        Parameters
-        ----------
-        x : T
-            Classical solution, typically obtained by measuring ``qarg``.
-
-        Returns
-        -------
-        float
-            Cost of ``x``. Lower values are better.
-        """
-        ...
 
     @abstractmethod
     def state_prep(

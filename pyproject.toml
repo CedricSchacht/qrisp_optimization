@@ -12,6 +12,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "mypy>=2.4.0",
+    "pytest>=9.1.1",
     "ruff>=0.17.0",
     "types-networkx>=3.6.1.20261006",
 ]
@@ -34,6 +35,10 @@ select = [
     "ANN", # flake8-annotations
 ]
 
+[tool.ruff.lint.isort]
+# shared test helpers, importable because pytest puts tests/ on sys.path
+known-local-folder = ["helpers"]
+
 [tool.mypy]
 python_version = "3.14"
 python_executable = ".venv/bin/python"
@@ -44,5 +49,9 @@ warn_unreachable = true
 disallow_subclassing_any = false
 
 [[tool.mypy.overrides]]
-module = ["qrisp", "qrisp.*"]
+module = ["qrisp", "qrisp.*", "scipy", "scipy.*"]
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

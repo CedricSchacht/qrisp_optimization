@@ -2,7 +2,6 @@
 
 from collections.abc import Generator
 
-import networkx as nx
 import numpy as np
 from numpy.typing import NDArray
 from qrisp import QuantumArray, h
@@ -30,31 +29,6 @@ class QUBOProblem(
     def __init__(self, Q: NDArray[np.float32]) -> None:  # noqa: N803
         self.Q: NDArray[np.float32] = Q
         self.n: int = Q.shape[0]
-
-    # alternative constructor
-    @staticmethod
-    def from_networkx[T](G: nx.Graph[T]) -> QUBOProblem:  # noqa: N803
-        """Build a QUBO problem from a NetworkX graph.
-
-        Not yet implemented.
-
-        Parameters
-        ----------
-        G : nx.Graph[T]
-            Graph from which to derive the QUBO matrix.
-
-        Returns
-        -------
-        QUBOProblem
-            The corresponding QUBO problem.
-
-        Raises
-        ------
-        NotImplementedError
-            Always, until implemented.
-        """
-        # TODO: build Q from G and return QUBO_Problem(Q)
-        raise NotImplementedError()
 
     # needed for QAOA and Bruteforce
     def cl_cost_function(self, x: BinaryIntArray) -> float:

@@ -1,5 +1,7 @@
 """Linear-Ramp QAOA (LR-QAOA), a parameter-free QAOA variant."""
 
+from collections.abc import Callable
+
 import numpy as np
 from qrisp import QuantumArray, QuantumVariable
 
@@ -17,18 +19,21 @@ class LRQAOA[T]:
     ----------
     problem : QAOARequirements[T]
         Problem providing state preparation, cost layer and mixer layer.
-    qarg : QuantumVariable | QuantumArray
-        Quantum argument on which the ansatz is built.
+    qarg : Callable[[], QuantumVariable | QuantumArray]
+        Factory creating a fresh quantum argument; every call to
+        :meth:`ansatz` builds on a new one.
     """
 
-    def __init__(self, problem: QAOARequirements[T], qarg: QuantumVariable | QuantumArray) -> None:
+    def __init__(
+        self,
+        problem: QAOARequirements[T],
+        qarg: Callable[[], QuantumVariable | QuantumArray]
+    ) -> None:
         self.problem: QAOARequirements[T] = problem
-        self.qarg: QuantumVariable | QuantumArray = qarg
+        self.qarg: Callable[[], QuantumVariable | QuantumArray] = qarg
 
     def linear_ramp(self, start: float, stop: float, steps: int) -> np.ndarray:
         """Compute a linear schedule of angles.
-
-        Not yet implemented.
 
         Parameters
         ----------
@@ -43,13 +48,8 @@ class LRQAOA[T]:
         -------
         np.ndarray
             Array of ``steps`` linearly spaced values from ``start`` to ``stop``.
-
-        Raises
-        ------
-        NotImplementedError
-            Always, until implemented.
         """
-        raise NotImplementedError()
+        return np.linspace(start, stop, steps)
 
     def ansatz(
         self,
@@ -57,7 +57,7 @@ class LRQAOA[T]:
         d_gamma: float,
         d_beta: float,
     ) -> QuantumVariable | QuantumArray:
-        """Build the LR-QAOA ansatz on ``qarg``.
+        """Build the LR-QAOA ansatz on a fresh quantum argument.
 
         Parameters
         ----------
@@ -66,20 +66,28 @@ class LRQAOA[T]:
         d_gamma : float
             Final cost angle; ``gamma`` ramps from ``0`` to ``d_gamma``.
         d_beta : float
-            Initial mixer angle; ``beta`` ramps from ``d_beta`` to ``0``.
+            Initial mixer strength; the mixer angle ramps from ``-d_beta`` to ``0``.
 
         Returns
         -------
         QuantumVariable | QuantumArray
-            ``qarg`` after applying the ansatz.
+            A new quantum argument from ``qarg()`` after applying the ansatz.
+
+        Notes
+        -----
+        The mixer layers apply ``exp(-i beta X)``, for which the initial uniform
+        superposition is the *highest*-energy state. The mixer angles are
+        therefore negated, so that a positive ``d_beta`` anneals towards the
+        minimum of the cost rather than the maximum.
         """
 
         gammas = self.linear_ramp(0.0, d_gamma, depth)
-        betas = self.linear_ramp(d_beta, 0.0, depth)
+        betas = -self.linear_ramp(d_beta, 0.0, depth)
+        qarg = self.qarg()
 
-        self.problem.state_prep(self.qarg)
+        self.problem.state_prep(qarg)
         for gamma, beta in zip(gammas, betas, strict=False):
-            self.problem.cost_layer(self.qarg, gamma)
-            self.problem.mixer_layer(self.qarg, beta)
+            self.problem.cost_layer(qarg, gamma)
+            self.problem.mixer_layer(qarg, beta)
 
-        return self.qarg
+        return qarg

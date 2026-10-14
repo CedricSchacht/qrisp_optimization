@@ -38,15 +38,17 @@ def main() -> None:
 
     algorithm = QAOA(
         problem=problem,         # using polymorphism: here the same problem is a qaoa-able problem
-        qarg=QuantumArray(
+        qarg=lambda : QuantumArray(
             qtype=QuantumBinary(),
             shape=len(Q)
         )
     )
     theta = np.array([0.5]*6)
     # This could be a warm start or just random parameter initialization
-    #theta = algorithm.optimize(theta)
-    # This is not implemented in the current stage, but it would be the way to do it later
+    theta = algorithm.optimize(theta)
+    # in optimize you can override the metric.
+    # It defaults to expectation value over the classical cost function,
+    # defined in the problem itself.
     qarg = algorithm.ansatz(theta)
     # This gives access to the qarg after the qaoa algorithm is applied
     meas = qarg.get_measurement()
